@@ -1,0 +1,22 @@
+# E-commerce Frontend
+e-commerce-frontend/node_modules
+e-commerce-frontend/dist
+e-commerce-frontend/.env
+e-commerce-frontend/.env.local
+e-commerce-frontent/.env.development.local
+e-commerce-frontent/.env.test.local
+e-commerce-frontent/.env.production.local
+e-commerce-frontend/build
+e-commerce-frontend/public
+
+# E-commerce Backend
+e-commerce-backend/node_modules
+e-commerce-backend/dist
+e-commerce-backend/.env
+e-commerce-backend/.env.local
+e-commerce-backend/.env.development.local
+e-commerce-backend/.env.test.local
+e-commerce-backend/.env.production.local
+e-commerce-backend/build
+e-commerce-backend/public
+
