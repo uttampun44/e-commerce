@@ -1,13 +1,11 @@
 import './App.css'
-import Frontend from './layout/frontend/frontend'
+import { AppRoutes } from './routes/approutes'
 
 function App() {
   
   return (
     <>
-    <Frontend> 
-      <h1>Hello World</h1>
-    </Frontend>
+      <AppRoutes />
     </>
   )
 }
