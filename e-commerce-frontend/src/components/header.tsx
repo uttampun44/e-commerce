@@ -67,7 +67,15 @@ export default function Header() {
 
       {/* dropdowntabs row  */}
       <div className="dropdown-row max-w-screen-lg mx-auto p-4">
-        <DropdownTabs />
+        <div className="row flex justify-between items-center gap-2">
+          <DropdownTabs />
+          <DropdownTabs />
+          <DropdownTabs />
+          <DropdownTabs />
+          <DropdownTabs />
+          <DropdownTabs />
+          <DropdownTabs />
+        </div>
       </div>
     </header>
   )

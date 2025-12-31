@@ -1,7 +1,11 @@
 export default function Footer() {
   return (
     <footer>
-        footer
+        <section>
+          <div className="footer-div bg-black">
+
+          </div>
+        </section>
     </footer>
   )
 }

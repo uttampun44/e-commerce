@@ -44,6 +44,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --screen-lg: var(--max-width-lg);
   --color-highlight: var(--main-highlight-color);
+  --primary-bg-color: var(--primary-color);
 }
 
 :root {
@@ -80,6 +81,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --max-width-lg: 990px;
+  --primary-color: #1877F2
 }
 
 .dark {
