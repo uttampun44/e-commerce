@@ -8,7 +8,7 @@ export default function Header() {
   return (
     <header>
       <div className="header-container bg-black text-white">
-        <div className="max-w-screen-lg mx-auto ">
+        <div className="max-w-[1190px] mx-auto ">
           <div className="row flex justify-between items-center p-4">
             <div className="heading-text">
               Welcome to worldwide Megamart!
@@ -31,7 +31,7 @@ export default function Header() {
 
       {/* search bar  */}
 
-      <div className=" max-w-screen-lg mx-auto p-4">
+      <div className=" max-w-[1190px] mx-auto p-4">
         <div className="flex items-center gap-2">
           <div className="hamburger bg-[#F3F9FB] p-2 rounded-md">
             <Menu className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-black cursor-pointer" />
