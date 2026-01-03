@@ -1,12 +1,13 @@
 import FooterIcon from '@/assets/images/unitdeal.png';
 import MobileApp from '@/assets/images/MobileApp.png';
 import Apple from '@/assets/images/apple.png';
+import { Link } from 'react-router';
 
 export default function Footer() {
   return (
     <footer>
       <section className="bg-black">
-        <div className="max-w-[1190px] mx-auto py-8 sm:py-12 lg:py-14 px-4 sm:px-6 lg:px-8 text-white">
+        <div className="max-w-297.5 mx-auto py-8 sm:py-12 lg:py-14 px-4 sm:px-6 lg:px-8 text-white">
          
           {/* Grid Layout - Responsive */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
@@ -34,35 +35,35 @@ export default function Footer() {
               <h5 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Top Category</h5>
               <ul className="list-none space-y-2 text-gray-400">
                 <li>
-                  <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                  <Link to="/computer-laptop" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                     Computer & Laptop
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                  <Link to="/smartphone" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                     Smartphone
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                  <Link to="/headphone" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                     HeadPhone
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <div className="flex items-center gap-x-2 my-2">
-                    <div className="border-t border-yellow-500 w-4 border-[1px] rounded-sm"></div>
+                    <div className="border-t border-yellow-500 w-4 border rounded-sm"></div>
                     <strong className='text-white text-sm sm:text-base'>Accessories</strong>
                   </div>
                   <ul className="ml-6 space-y-2">
                     <li>
-                      <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                      <Link to="/camera-photos" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                         Camera & Photos
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                      <Link to="/tv-movies" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                         TV & Movies
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -74,39 +75,39 @@ export default function Footer() {
               <h5 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Quick Links</h5>
               <ul className="list-none space-y-2 text-gray-400">
                 <li>
-                  <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                  <Link to="/shop-product" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                     Shop Product
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                  <Link to="/shopping-cart" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                     Shopping Cart
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                  <Link to="/wishlist" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                     Whistlist
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                  <Link to="/compare-orders" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                     Compare Orders
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                  <Link to="/track-order" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                     Track Order
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                  <Link to="/customer-help" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                     Customer Help
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
+                  <Link to="/about-us" className="text-xs sm:text-sm hover:text-white hover:underline transition-colors">
                     About Us
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

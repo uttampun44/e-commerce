@@ -6,7 +6,7 @@ export default function Login() {
     return (
         <main>
             <section className="bg-[url('./src/assets/images/loginbg.png')] no-repeat bg-cover flex items-center justify-center">
-                <div className="login-form max-w-screen-lg mx-auto px-4 pt-24 flex gap-8 mb-10">
+                <div className="login-form max-w-5xl mx-auto px-4 pt-24 flex gap-8 mb-10">
                     <div className="login-img w-1/2">
                         <h1 className="font-bold text-4xl text-black"> Welcome Back</h1>
                        <p className="text-slate-700 text-xl mt-2">Login into your account</p>
@@ -28,11 +28,11 @@ export default function Login() {
                            <div className="login-google mt-7">
                              <div className="img-google flex justify-center items-center mb-4 gap-x-4 border-2 py-4 rounded-md cursor-pointer">
                                 <img src={Googgle} alt="Google" />
-                                <span>Login with Google</span>
+                                <span className="text-base font-semibold">Login with Google</span>
                              </div>
-                             <div className="img-facebook flex justify-center items-center mb-4 gap-x-4 bg-blue-600 py-4 rounded-md border-[1px] cursor-pointer">
+                             <div className="img-facebook flex justify-center items-center mb-4 gap-x-4 bg-blue-600 py-4 rounded-md border cursor-pointer">
                                 <img src={Facebook} alt="Facebook" />
-                                <span>Login with Facebook</span>
+                                <span className="text-base font-semibold">Login with Facebook</span>
                              </div>
                            </div>
                         </form>
