@@ -1,8 +1,13 @@
 import Loginiimg from "@/assets/images/login.png";
 import Googgle from "@/assets/images/logos_google-icon.png";
 import Facebook from "@/assets/images/logos_facebook.png";
+import useToggle from "@/hooks/useToggle";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
+    
+    const [passwordVisible, togglePasswordVisible] = useToggle();
+
     return (
         <main>
             <section className="bg-[url('./src/assets/images/loginbg.png')] no-repeat bg-cover flex items-center justify-center">
@@ -19,9 +24,21 @@ export default function Login() {
                                 <label htmlFor="email" className="block font-semibold text-lg">Email</label>
                                 <input type="email" id="email" className="w-full p-3 border rounded-md bg-slate-300" placeholder="Enter your email address" />
                             </div>
-                            <div className="mb-7">
+                            <div className="mb-7 relative">
                                 <label htmlFor="password" className="block font-semibold text-lg">Password</label>
-                                <input type="password" id="password" className="w-full p-3 border rounded-md bg-slate-300" placeholder="Enter your password" />
+                                <input type={passwordVisible ? "text" : "password"} id="password" className="w-full p-3 border rounded-md bg-slate-300" placeholder="Enter your password" />
+                                {
+                                    passwordVisible ?
+                                    <EyeOff
+                                      className="absolute top-11 right-3 cursor-pointer"
+                                        onClick={togglePasswordVisible}
+                                    />
+                                    :
+                                    <Eye
+                                        className="absolute top-11 right-3 cursor-pointer"
+                                        onClick={togglePasswordVisible}
+                                    />
+                                }
                             </div>
                             <button type="submit" className="w-full bg-black text-white p-4 rounded-md mt-1 cursor-pointer">Login</button>
                            

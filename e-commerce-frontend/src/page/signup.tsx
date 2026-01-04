@@ -1,8 +1,14 @@
 import Loginiimg from "@/assets/images/login.png";
 import Googgle from "@/assets/images/logos_google-icon.png";
 import Facebook from "@/assets/images/logos_facebook.png";
+import useToggle from "@/hooks/useToggle";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SignUp() {
+    
+    const [passwordVisible, togglePasswordVisible] = useToggle();
+    const [confirmPasswordVisible, toggleConfirmPasswordVisible] = useToggle();
+   
     return (
          <main>
             <section className="bg-[url('./src/assets/images/loginbg.png')] no-repeat bg-cover flex items-center justify-center">
@@ -17,17 +23,47 @@ export default function SignUp() {
                         <form encType="multipart/form-data">
                           <div className="mb-7">
                                 <label htmlFor="fullname" className="block font-semibold text-lg">Full Name</label>
-                                <input type="text" id="fullname" className="w-full p-3 border rounded-md bg-slate-300" placeholder="Enter your full name" />
+                                <input type="text" id="fullname" className="w-full p-3 border rounded-md bg-slate-300" placeholder="Enter your full name" name="fullname" />
                             </div>
                             <div className="mb-7">
                                 <label htmlFor="email" className="block font-semibold text-lg">Email</label>
-                                <input type="email" id="email" className="w-full p-3 border rounded-md bg-slate-300" placeholder="Enter your email address" />
+                                <input type="email" id="email" className="w-full p-3 border rounded-md bg-slate-300" placeholder="Enter your email address" name="email" />
                             </div>
-                            <div className="mb-7">
+                            <div className="mb-7 relative">
                                 <label htmlFor="password" className="block font-semibold text-lg">Password</label>
-                                <input type="password" id="password" className="w-full p-3 border rounded-md bg-slate-300" placeholder="Enter your password" />
+                                <input type={passwordVisible ? "text" : "password"} id="password" className="w-full p-3 border rounded-md bg-slate-300" placeholder="Enter your password" name="password" />
+                               
+                                {
+                                    passwordVisible ?
+                                    <EyeOff 
+                                      className="absolute top-11 right-3 cursor-pointer"
+                                        onClick={togglePasswordVisible}
+                                    />
+                                    :
+                                    <Eye
+                                        className="absolute top-11 right-3 cursor-pointer"
+                                        onClick={togglePasswordVisible}
+                                    />
+                                }
+                                
                             </div>
-                            <button type="submit" className="w-full bg-black text-white p-4 rounded-md mt-1 cursor-pointer">Login</button>
+                            <div className="mb-7 relative">
+                                <label htmlFor="confirm_password" className="block font-semibold text-lg">Confirm Password</label>
+                                <input type="password" id="confirm_password" className="w-full p-3 border rounded-md bg-slate-300" placeholder="Enter your Confirm Password" name="confirm_password" />
+                               {
+                                    confirmPasswordVisible ?
+                                    <EyeOff 
+                                      className="absolute top-11 right-3 cursor-pointer"
+                                        onClick={toggleConfirmPasswordVisible}
+                                    />
+                                    :
+                                    <Eye
+                                        className="absolute top-11 right-3 cursor-pointer"
+                                        onClick={toggleConfirmPasswordVisible}
+                                    />
+                                }
+                            </div>
+                            <button type="submit" className="w-full bg-black text-white p-4 rounded-md mt-1 cursor-pointer">Sign Up</button>
                            
                            <div className="login-google mt-7">
                              <div className="img-google flex justify-center items-center mb-4 gap-x-4 border-2 py-4 rounded-md cursor-pointer">
