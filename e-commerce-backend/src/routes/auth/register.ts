@@ -1,9 +1,8 @@
-import Router from "express";
+import { RegisterController } from "@controllers/auth/RegisterController";
+import { Router } from "express";
 
-const resgisterRouter = Router();
+const registerRouter = Router();
 
-resgisterRouter.get("/register", (req, res) => {
-  res.send("Register route is working! Everything is set up correctly.");
-});
+registerRouter.post("/register", RegisterController);
 
-export default resgisterRouter;
+export default registerRouter;
