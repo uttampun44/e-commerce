@@ -8,6 +8,7 @@ e-commerce-frontent/.env.test.local
 e-commerce-frontent/.env.production.local
 e-commerce-frontend/build
 e-commerce-frontend/public
+e-commerce-frontend/.dockerignore
 
 # E-commerce Backend
 e-commerce-backend/node_modules
@@ -19,4 +20,5 @@ e-commerce-backend/.env.test.local
 e-commerce-backend/.env.production.local
 e-commerce-backend/build
 e-commerce-backend/public
+e-commerce-backend/.dockerignore
 

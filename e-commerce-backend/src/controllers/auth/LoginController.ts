@@ -3,27 +3,26 @@ import { userTypes } from "@/schemas/users/user.types";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { ZodError } from "zod";
+import jwt from "jsonwebtoken";
 
 export const LoginController = async (req: Request, res: Response) => {
   try {
 
-    const validationData = userTypes.parse(req.body);
+    const validationData = userTypes.pick({ email: true, password: true }).parse(req.body);
     // Login logic will be here
     const { email, password } = validationData;
 
-    if (!email) {
-      return res.status(400).json({ success: false, message: "Email is required" });
-    } else if (!password) {
-      return res.status(400).json({ success: false, message: "Password is required" });
+    const checkUser = await UserModel.findOne({ email });
+
+    if (!checkUser) {
+      return res.status(401).json(
+        { success: false, 
+        message: "Invalid email or password" 
+        }
+       );
     }
 
-    const checkUserEmail = await UserModel.findOne({ email });
-
-    if (!checkUserEmail) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, checkUserEmail.password);
+    const isPasswordValid = await bcrypt.compare(password, checkUser.password);
 
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -31,6 +30,27 @@ export const LoginController = async (req: Request, res: Response) => {
         message: "Invalid email or password"
       });
     }
+    
+    // token generation
+    const token = jwt.sign(
+      {
+        id: checkUser._id,  
+        email: checkUser.email
+      },
+      process.env.JWT_SECRET_KEY as string,
+      { expiresIn: "1h" }
+    );
+
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token: token,
+      user: {
+        id: checkUser._id,
+        email: checkUser.email,
+      }
+    });
 
   } catch (error) {
 
@@ -41,7 +61,7 @@ export const LoginController = async (req: Request, res: Response) => {
         errors: error.message
       });
     }
-    
+
     return res.status(500).json({
       success: false,
       message: "An error occurred during login"
