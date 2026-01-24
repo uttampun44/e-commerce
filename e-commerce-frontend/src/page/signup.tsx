@@ -4,6 +4,8 @@ import Facebook from "@/assets/images/logos_facebook.png";
 import useToggle from "@/hooks/useToggle";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { usePost } from "@/hooks/api/usePost";
+import { useNavigate } from "react-router";
 
 type SignUpTypes = {
     fullname: string;
@@ -16,10 +18,33 @@ export default function SignUp() {
     const [passwordVisible, togglePasswordVisible] = useToggle();
     const [confirmPasswordVisible, toggleConfirmPasswordVisible] = useToggle();
 
+    const { isPending, isSuccess, mutate: createRegister } = usePost<any, SignUpTypes>('/api/v1/auth/register', {
+        invalidateQueries: [['create']],
+
+        onSuccess: () => {
+            console.log('successfull login')
+            navigate('/login')
+        },
+        onError: (error: any) => {
+            console.log('Error log', error)
+        },
+        showErrorMessage: true,
+        showSuccessMessage: true
+    })
+
+    const navigate = useNavigate();
+
+
+
     const { register, formState: { errors }, handleSubmit } = useForm<SignUpTypes>();
 
     const onSubmit: SubmitHandler<SignUpTypes> = (data: SignUpTypes) => {
-        console.log(data);
+        if(data.password != data.confirm_password) {
+            alert('Password not matchin')
+            return
+        }
+        navigate('/api/v1/login')
+        createRegister(data)
     };
 
     return (
@@ -87,7 +112,15 @@ export default function SignUp() {
                                     {errors.confirm_password && <span className="text-red-600">This field is required</span>}
                                 </div>
                             </div>
-                            <button type="submit" className="w-full bg-black text-white p-4 rounded-md mt-1 cursor-pointer">Sign Up</button>
+                            <button type="submit" className="w-full bg-black text-white p-4 rounded-md mt-1 cursor-pointer">
+                                {isPending ? 'Signing up...' : 'Signup'}
+                            </button>
+
+                            {isSuccess && (
+                                <p className="text-green-600 text-center mt-2">
+                                    Registration successful! Redirecting...
+                                </p>
+                            )}
 
                             <div className="login-google mt-7">
                                 <div className="img-google flex justify-center items-center mb-4 gap-x-4 border-2 py-4 rounded-md cursor-pointer">
