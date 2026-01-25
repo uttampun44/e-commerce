@@ -1,53 +1,35 @@
-name: unitdeals
+name: UnitDeals CI/CD Pipeline
 
 on:
- push:
-   branches:
-     - main
-     - 'development'
+  push:
+    branches:
+      - main
+      - development
 
-    #  jobs frontend and backend
 jobs:
-  frontend:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./e-commerce-frontend
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '24'
-          check-latest: true
-
-      - name: Copy .env file
-        run: echo "${{ secrets.FRONTEND_ENV }}" > .env
-      - name: Install frontend dependencies
-        run: npm install
-      - name: Build frontend
-        run: npm run build
-
   backend:
+    name: Build Backend
+    uses: ./.github/workflows/backend.yml
+    with:
+      node-version: '24'
+      working-directory: './e-commerce-backend'
+    secrets:
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+
+  frontend:
+    name: Build Frontend
+    uses: ./.github/workflows/frontend.yml
+    with:
+      node-version: '24'
+      working-directory: './e-commerce-frontend'
+    secrets:
+      FRONTEND_ENV: ${{ secrets.FRONTEND_ENV }}
+
+  # Simple success check
+  check-success:
+    name: All Builds Complete
+    needs: [backend, frontend]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        #  working directory
-        working-directory: ./e-commerce-backend
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '24'
-          check-latest: true
-
-      - name: Copy .env file
-        run: |
-         echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" > .env
-         echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
-
-      - name: Install backend dependencies
-        run: npm install
-      - name: Build backend
-        run: npm run build
-
-      
+      - run: echo "✅ All builds passed!"
