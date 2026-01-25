@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './App.css'
 import { AppRoutes } from '@/routes/Approutes'
+import {Toaster} from 'sonner'
 
 function App() {
 
@@ -10,6 +11,10 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <AppRoutes />
+        <Toaster 
+        position='top-right'
+        richColors
+        />
       </QueryClientProvider>
     </>
   )

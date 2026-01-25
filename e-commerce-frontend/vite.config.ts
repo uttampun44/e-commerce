@@ -17,10 +17,11 @@ export default defineConfig({
     port: 3000,
     open: true,
     proxy: {
-    
-    },
-    cors: {
-      'origin': 'http://localhost:8080'
+      '/api/v1/': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api')
+      }
     }
   },
   resolve: {

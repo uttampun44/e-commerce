@@ -3,9 +3,14 @@ import combineroutes from "@routes/index";
 import "@/schemas/index";
 import connectDB from "@/schemas/index";
 import middleware from "@/middleware/middleware";
+import cors from 'cors';
+import { corsOptions } from "@/config/cors";
 
 const app: Express = express();
 const PORT = process.env.PORT || 8000;
+
+// cors middleware first
+app.use(cors(corsOptions));
 
 // middlewares
 middleware(app);
