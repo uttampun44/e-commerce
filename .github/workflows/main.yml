@@ -6,6 +6,7 @@ on:
       - main
       - development
 
+      # jobs for backend, frontend and integrated
 jobs:
   backend:
     name: Build Backend
