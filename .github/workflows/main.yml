@@ -26,10 +26,21 @@ jobs:
     secrets:
       FRONTEND_ENV: ${{ secrets.FRONTEND_ENV }}
 
+  integrated:
+      name: Integrate Test
+      needs: [frontend, backend]
+      uses: ./.github/workflows/integration-test.yml
+      with:
+         backend-directory: './e-commerce-backend'
+         frontend-directory: './e-commerce-frontend'
+      secrets:
+        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+        FRONTEND_ENV: ${{ secrets.FRONTEND_ENV }}
+
   # Simple success check
   check-success:
     name: All Builds Complete
-    needs: [backend, frontend]
+    needs: [integrated]
     runs-on: ubuntu-latest
     steps:
       - run: echo "✅ All builds passed!"
