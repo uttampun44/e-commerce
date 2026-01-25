@@ -1,0 +1,55 @@
+name: unitdeals
+
+on:
+ push:
+   branches:
+     - main
+     - 'development'
+
+    #  jobs frontend and backend
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./e-commerce-frontend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-magaer-cache: false
+          check-latest: true
+
+      - name: Copy .env file
+        run: echo "${{ secrets.FRONTEND_ENV }}" > .env
+      - name: Install frontend dependencies
+        run: npm install
+      - name: Build frontend
+        run: npm run build
+
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        #  working directory
+        working-directory: ./e-commerce-backend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-0cache: false
+          check-latest: true
+
+      - name: Copy .env file
+        run: |
+         echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" > .env
+         echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
+
+      - name: Install backend dependencies
+        run: npm install
+      - name: Build backend
+        run: npm run build
+
+      

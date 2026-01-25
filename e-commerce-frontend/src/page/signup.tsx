@@ -45,7 +45,12 @@ export default function SignUp() {
   });
 
   const onSubmit: SubmitHandler<SignUpFormData> = (data: SignUpFormData) => {
-    createRegister(data);
+    try {
+      createRegister(data);
+      navigate('/login')
+    } catch (error: any) {
+      toast.error(error)
+    }
   };
 
   return (

@@ -5,6 +5,7 @@ import connectDB from "@/schemas/index";
 import middleware from "@/middleware/middleware";
 import cors from 'cors';
 import { corsOptions } from "@/config/cors";
+import chalk from "chalk";
 
 const app: Express = express();
 const PORT = process.env.PORT || 8000;
@@ -22,5 +23,5 @@ connectDB();
 app.use("/api/v1/", combineroutes);
 
 app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+  console.log(chalk.green(`Server is running at http://localhost:${PORT}`));
 });

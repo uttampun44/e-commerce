@@ -1,12 +1,8 @@
 import { Router } from "express";
-import loginRouter from "@routes/auth/login";
-import registerRouter from "@routes/auth/register";
-import logoutRoute from "./auth/logout";
+import AuthRouter from "@routes/auth/auth";
 
 const combineroutes = Router();
 
-combineroutes.use("/auth", loginRouter);
-combineroutes.use("/auth", registerRouter);
-combineroutes.use("/auth", logoutRoute);
+combineroutes.use("/auth", AuthRouter);
 
 export default combineroutes;

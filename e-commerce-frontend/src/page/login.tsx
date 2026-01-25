@@ -4,23 +4,52 @@ import Facebook from "@/assets/images/logos_facebook.png";
 import useToggle from "@/hooks/useToggle";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { usePost } from "@/hooks/api/usePost";
+import { toast } from "sonner";
+import { useNavigate } from "react-router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {z} from 'zod'
 
 type LoginTypes = {
   email: string;
   password: string;
 };
 
+const LoginSchema = z.object({
+   email: z.string().min(1, 'Email is required'),
+   password: z.string().min(1, 'Password is required')
+})
+
 export default function Login() {
   const [passwordVisible, togglePasswordVisible] = useToggle();
+  const navigate = useNavigate()
+  const {isPending, isSuccess, mutate: CreateLogin} = usePost('api/v1/auth/login', {
+    invalidateQueries: [["login"]],
+
+    onSuccess: () =>{
+      toast.success('Login Successfully')
+      navigate('/dashboard')
+    },
+    onError: (error: any) => {
+      toast.error('Something Went Wrong', error)
+    }
+  });
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<LoginTypes>();
+  } = useForm<LoginTypes>({
+    resolver: zodResolver(LoginSchema)
+  });
 
   const onSubmit: SubmitHandler<LoginTypes> = (data: LoginTypes) => {
-    console.log(data);
+   try {
+      CreateLogin(data);
+      toast.success('Login Successfull')
+   } catch (error: any) {
+     toast.error(error)
+   }
   };
 
   return (
@@ -45,11 +74,11 @@ export default function Login() {
                   id="email"
                   className="w-full p-3 border rounded-md bg-slate-300"
                   placeholder="Enter your email address"
-                  {...register("email", { required: true })}
+                  {...register("email")}
                 />
                 <div className="errors my-1">
                   {errors.email && (
-                    <span className="text-red-600">This field is required</span>
+                    <span className="text-red-600">{errors.email.message}</span>
                   )}
                 </div>
               </div>
@@ -65,11 +94,11 @@ export default function Login() {
                   id="password"
                   className="w-full p-3 border rounded-md bg-slate-300"
                   placeholder="Enter your password"
-                  {...register("password", { required: true })}
+                  {...register("password")}
                 />
                 <div className="errors my-1">
                   {errors.password && (
-                    <span className="text-red-600">This field is required</span>
+                    <span className="text-red-600">{errors.password.message}</span>
                   )}
                 </div>
                 {passwordVisible ? (
@@ -88,8 +117,14 @@ export default function Login() {
                 type="submit"
                 className="w-full bg-black text-white p-4 rounded-md mt-1 cursor-pointer"
               >
-                Login
+                {isPending ? 'Login...': 'Login'}
               </button>
+              
+              {isSuccess && (
+                <p className="text-green-600 text-center mt-2">
+                  Login successful! Redirecting...
+                </p>
+              )}
 
               <div className="login-google mt-7">
                 <div className="img-google flex justify-center items-center mb-4 gap-x-4 border-2 py-4 rounded-md cursor-pointer">

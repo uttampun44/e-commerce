@@ -1,4 +1,6 @@
+import Backend from "@/layout/backend/backend";
 import Frontend from "@/layout/frontend/frontend";
+import Dashboard from "@/page/dashboard";
 import Error from "@/page/error";
 import Home from "@/page/home";
 import Login from "@/page/login";
@@ -26,4 +28,14 @@ export const routes = createBrowserRouter([
           Component: SignUp,
         }
       ]
-  }]);
+  },
+  {
+    Component: Backend,
+    children: [
+      {
+        path: '/dashboard',
+        Component: Dashboard
+      }
+    ]
+  }
+]);
