@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {z} from 'zod'
+import { useAuhthContext } from "@/contextapi/auth";
 
 type LoginTypes = {
   email: string;
@@ -23,12 +24,24 @@ const LoginSchema = z.object({
 export default function Login() {
   const [passwordVisible, togglePasswordVisible] = useToggle();
   const navigate = useNavigate()
+  const {setToken} = useAuhthContext();
+
   const {isPending, isSuccess, mutate: CreateLogin} = usePost('api/v1/auth/login', {
     invalidateQueries: [["login"]],
 
-    onSuccess: () =>{
+    onSuccess: (data: any) =>{
       toast.success('Login Successfully')
       navigate('/dashboard')
+      console.log('Login Data:', data)
+      localStorage.setItem('authToken', JSON.stringify(data));
+      setToken({
+        user: {
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+        },
+        token: data.token
+      });
     },
     onError: (error: any) => {
       toast.error('Something Went Wrong', error)
