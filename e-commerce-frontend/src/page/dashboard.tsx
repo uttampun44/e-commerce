@@ -5,7 +5,6 @@ export default function Dashboard() {
 
     const {token} = useAuhthContext();
 
-    console.log('Dashboard Auth Token:', token);
     return (
         <React.Fragment>
            {token?.token ? (
