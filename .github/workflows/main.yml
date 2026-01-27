@@ -16,9 +16,7 @@ jobs:
     with:
       node-version: '24'
       working-directory: './e-commerce-backend'
-    secrets:
-      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-      NODE_ENV: ${{ secrets.NODE_ENV }}
+    secrets: inherit
       
       # frontend
   frontend:

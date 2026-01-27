@@ -15,7 +15,7 @@ on:
         default: './e-commerce-frontend'
     secrets:
       FRONTEND_ENV:
-        required: true
+        required: false
     outputs:
       build-status:
         description: "Build status"
