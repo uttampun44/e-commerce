@@ -16,6 +16,8 @@ on:
     secrets:
       JWT_SECRET_KEY:
         required: true
+      MONGO_URI:
+        required: true
       NODE_ENV:
         required: true
     outputs:

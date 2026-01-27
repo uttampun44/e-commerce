@@ -11,11 +11,11 @@ on:
         required: false
         type: string
         default: './e-commerce-frontend'
-    secrets:
-      JWT_SECRET_KEY:
-        required: true
-      FRONTEND_ENV:
-        required: true
+    # secrets:
+    #   JWT_SECRET_KEY:
+    #     required: true
+    #   FRONTEND_ENV:
+    #     required: true
 
 jobs:
   integration-test:
@@ -34,7 +34,7 @@ jobs:
       - name: Setup Frontend
         working-directory: ${{ inputs.frontend-directory }}
         run: |
-          echo "${{ secrets.FRONTEND_ENV }}" > .env
+          # echo "${{ secrets.FRONTEND_ENV }}" > .env
           npm i
           npm run build
           
@@ -42,7 +42,8 @@ jobs:
         working-directory: ${{ inputs.backend-directory }}
         run: |
           echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" > .env
-          echo "NODE_ENV=development" >> .env
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
+          echo "MONGODB_URI=${{ secrets.MONGO_URI }}" >> .env
           echo "PORT=8080" >> .env
           npm i
 
