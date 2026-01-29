@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { ZodError } from "zod";
 import jwt from "jsonwebtoken";
+import { configEnv } from "@/config/env";
 
 export const LoginController = async (req: Request, res: Response) => {
   try {
@@ -37,7 +38,7 @@ export const LoginController = async (req: Request, res: Response) => {
         id: checkUser._id,  
         email: checkUser.email
       },
-      process.env.JWT_SECRET_KEY as string,
+      configEnv.jwtSecret as string,
       { expiresIn: "1h" }
     );
 
