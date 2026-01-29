@@ -32,7 +32,6 @@ export default function Login() {
     onSuccess: (data: any) =>{
       toast.success('Login Successfully')
       navigate('/dashboard')
-      console.log('Login Data:', data)
       localStorage.setItem('authToken', JSON.stringify(data));
       setToken({
         user: {
@@ -59,7 +58,6 @@ export default function Login() {
   const onSubmit: SubmitHandler<LoginTypes> = (data: LoginTypes) => {
    try {
       CreateLogin(data);
-      toast.success('Login Successfull')
    } catch (error: any) {
      toast.error(error)
    }

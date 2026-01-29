@@ -9,7 +9,7 @@ export default function Dashboard() {
         <React.Fragment>
            {token?.token ? (
             <div>
-                <h1>Welcome to the Dashboard, {token?.user.email}!</h1>
+                <h1>Welcome to the Dashboard, {token?.user.email}! hy</h1>
             </div>
            ) : (
             <div>

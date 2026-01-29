@@ -16,13 +16,13 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
-    proxy: {
-      '/api/v1/': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '/api')
-      }
-    }
+    // proxy: {
+    //   '/api/v1/': {
+    //     target: 'http://localhost:8000',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, '/api')
+    //   }
+    // }
   },
   resolve: {
     alias: {

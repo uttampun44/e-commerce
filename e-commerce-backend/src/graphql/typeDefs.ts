@@ -1,0 +1,27 @@
+import { gql } from "graphql-tag";
+
+export const typeDefs = gql`
+  type Category {
+    id: String!
+    name: String!
+    description: String!
+    slug: String!
+    icon: String
+    parentCategoryId: String
+    isActive: Boolean!
+    createdAt: String
+    updatedAt: String
+  }
+
+
+  type Query {
+    # Get all active categories
+    categories: [Category!]!
+    
+    # Get all product-categories names
+    categoryNames: [String!]!
+
+    # Get category by ID
+    category(id: String!): Category
+  }
+`;

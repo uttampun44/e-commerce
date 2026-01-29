@@ -3,6 +3,7 @@ import combineroutes from "@routes/index";
 import "@/schemas/index";
 import connectDB from "@/schemas/index";
 import middleware from "@/middleware/middleware";
+import { setupGraphQL } from "@/graphql/index.js";
 import cors from 'cors';
 import { corsOptions } from "@/config/cors";
 import chalk from "chalk";
@@ -19,9 +20,15 @@ middleware(app);
 // database connection is handled in schemas/index.ts
 connectDB();
 
-// routes will be here
-app.use("/api/v1/", combineroutes);
+// Setup GraphQL
+(async () => {
+  await setupGraphQL(app);
+  
+  // REST routes
+  app.use("/api/v1/", combineroutes);
 
-app.listen(PORT, () => {
-  console.log(chalk.green(`Server is running at http://localhost:${PORT}`));
-});
+  app.listen(PORT, () => {
+    console.log(chalk.green(`Server is running at http://localhost:${PORT}`));
+    console.log(chalk.blue(`GraphQL Server: http://localhost:${PORT}/graphql`));
+  });
+})();
