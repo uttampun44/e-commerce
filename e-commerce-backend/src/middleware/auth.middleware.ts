@@ -8,14 +8,15 @@ export interface AuthRequest extends Request {
 }
 
 const authmiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
+
+    // extracting token from headers example: "Bearer <token>"
   const token = req.headers.authorization?.split(' ')[1] ?? null;
 
-  
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }
     try {
-        // checking token validity 
+        // checking token verification
         const decoded = jwt.verify(token, configEnv.jwtSecret || 'your_jwt_secret');
         req.user = decoded;
         next();
