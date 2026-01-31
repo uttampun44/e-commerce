@@ -4,7 +4,7 @@ import { typeDefs } from "./typeDefs.js";
 import { resolvers } from "./resolvers.js";
 import express, { Express } from "express";
 import cors from "cors";
-import authmiddleware, { AuthRequest } from "@/middleware/auth.middleware.js";
+import { optionalAuthmiddleware, AuthRequest } from "@/middleware/auth.middleware.js";
 
 export async function setupGraphQL(app: Express) {
   const server = new ApolloServer({
@@ -19,7 +19,7 @@ export async function setupGraphQL(app: Express) {
     "/graphql",
     cors<cors.CorsRequest>(),
     express.json(),
-    authmiddleware,
+    optionalAuthmiddleware,
     expressMiddleware(server, {
       context: async ({ req }: { req: AuthRequest }) => ({ 
         user: req.user,

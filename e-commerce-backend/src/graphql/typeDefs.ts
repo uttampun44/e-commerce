@@ -1,5 +1,6 @@
 import { gql } from "graphql-tag";
 
+// GraphQL type definitions for Category entity and related queries
 export const typeDefs = gql`
   type Category {
     id: String!
