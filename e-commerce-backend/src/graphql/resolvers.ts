@@ -1,3 +1,4 @@
+import { createProduct, updateProduct } from "@schemas/products/products.constant.js";
 import {
   getCategoryById,
   getActiveCategories,
@@ -25,6 +26,29 @@ export const resolvers = {
     category: (_: any, { id }: { id: string }, context: { user?: any }) => {
         if(!context.user) throw new Error("Unauthorized");
       return getCategoryById(id);
+    },
+  },
+
+  // mutation for creating and updating products
+  Mutation: {
+    // Create a new product - PROTECTED MUTATION
+    createProduct: (
+      _: any,
+      { name, description, price, stock, categoryId, sku }: any,
+      context: { user?: any }
+    ) => {
+      if (!context.user) throw new Error("Unauthorized");
+      return createProduct({ name, description, price, stock, categoryId, sku });
+    },
+
+    // Update an existing product - PROTECTED MUTATION
+    updateProduct: (
+      _: any,
+      { id, name, description, price, stock, sku }: any,
+      context: { user?: any }
+    ) => {
+      if (!context.user) throw new Error("Unauthorized");
+      return updateProduct({ id, name, description, price, stock, sku });
     },
   },
 };

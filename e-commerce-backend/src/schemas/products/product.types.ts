@@ -1,3 +1,4 @@
+
 import { z } from 'zod';
 
 
@@ -38,13 +39,31 @@ export const productSchema = z.object({
 
   image: z
     .any()
+    .optional()
     .refine((files) => {
+      if (!files) return true; // Allow optional
       return files?.[0]?.size <= MAX_FILE_SIZE;
     }, `Max image size is 5MB.`)
     .refine(
-      (files) => ACCEPTED_IMAGE_MIME_TYPES.includes(files?.[0]?.type),
+      (files) => {
+        if (!files) return true; // Allow optional
+        return ACCEPTED_IMAGE_MIME_TYPES.includes(files?.[0]?.type);
+      },
       "Only .jpg, .jpeg, .png and .webp formats are supported."
     ),
+
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
 });
 
-export type ProductFormData = z.infer<typeof productSchema>;
+export type Product = z.infer<typeof productSchema>;
+
+export const createProductSchema = productSchema.omit({
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateProductSchema = createProductSchema.partial().extend({
+  id: z.string("Product ID is required"),
+});
+

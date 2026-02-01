@@ -1,5 +1,5 @@
 import mongoose, { Document } from "mongoose"
-import { userTypes } from "./user.types";
+import { userTypes } from "../schemas/users/user.types";
 import z from "zod";
 
 type UserType = z.infer<typeof userTypes>;

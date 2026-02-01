@@ -1,4 +1,4 @@
-import { UserModel } from "@/schemas/users/user.schema";
+import { UserModel } from "@/models/User";
 import { userTypes } from "@/schemas/users/user.types";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";

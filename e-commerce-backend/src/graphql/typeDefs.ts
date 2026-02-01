@@ -13,7 +13,19 @@ export const typeDefs = gql`
     createdAt: String
     updatedAt: String
   }
-
+  
+  type Product {
+    id: String!
+    name: String!
+    description: String!
+    price: Float!
+    stock: Int!
+    categoryId: String!
+    sku: String!
+    isActive: Boolean!
+    createdAt: String
+    updatedAt: String
+  }
 
   type Query {
     # Get all active categories
@@ -24,5 +36,27 @@ export const typeDefs = gql`
 
     # Get category by ID
     category(id: String!): Category
+  }
+
+  type Mutation {
+    # Create a new Product
+    createProduct(
+      name: String!
+      description: String!
+      price: Float!
+      stock: Int!
+      categoryId: String!
+      sku: String!
+    ): Product!
+
+    # Update an existing product
+    updateProduct(
+      id: String!
+      name: String
+      description: String
+      price: Float
+      stock: Int
+      sku: String
+    ): Product!
   }
 `;

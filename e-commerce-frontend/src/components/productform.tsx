@@ -58,7 +58,12 @@ export default function ProductsForm() {
   });
 
   const onSubmit: SubmitHandler<ProductFormData> = (data: ProductFormData) => {
-    createProduct(data);
+    try {
+       createProduct(data);
+    } catch (error) {
+      throw new Error("Submission failed: " + (error as Error).message);
+      console.error("Submission error:", error);
+    }
   };
   return (
    <div className="bg-white p-6 rounded-lg shadow-md mb-6 w-full">
@@ -153,9 +158,9 @@ export default function ProductsForm() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              {errors.category && (
+              {errors.categoryId && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.category.message}
+                  {errors.categoryId.message}
                 </p>
               )}
             </div>
@@ -171,6 +176,22 @@ export default function ProductsForm() {
               {errors.sku && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.sku.message}
+                </p>
+              )}
+            </div>
+
+            {/* Image */}
+            <div>
+              <label className="block text-sm font-medium mb-2">Image</label>
+              <Input
+                type="file"
+                {...register("image")}
+                className={errors.image ? "border-red-500" : ""}
+                
+              />
+              {errors.image && (
+                <p className="text-red-500 text-sm mt-1">
+                  {typeof errors.image.message === 'string' ? errors.image.message : 'Invalid image file.'}
                 </p>
               )}
             </div>
