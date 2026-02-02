@@ -35,16 +35,6 @@ export const productSchema = z.object({
   sku: z
     .string("SKU is required")
     .min(3, "SKU must be at least 3 characters"),
-
-  image: z
-    .any()
-    .refine((files) => {
-      return files?.[0]?.size <= MAX_FILE_SIZE;
-    }, `Max image size is 5MB.`)
-    .refine(
-      (files) => ACCEPTED_IMAGE_MIME_TYPES.includes(files?.[0]?.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
-    ),
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;

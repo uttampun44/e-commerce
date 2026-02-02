@@ -1,4 +1,4 @@
-import { Product } from "../../models/Product.js";
+import { Product } from "@/models/Product.js";
 
 export const createProduct = async (data: any): Promise<any> => {
   try {
@@ -14,7 +14,21 @@ export const createProduct = async (data: any): Promise<any> => {
     });
 
     const savedProduct = await newProduct.save();
-    return savedProduct.toObject();
+    const productObj = savedProduct.toObject();
+    
+    // Map MongoDB _id to id for GraphQL
+    return {
+      id: productObj._id.toString(),
+      name: productObj.name,
+      description: productObj.description,
+      price: productObj.price,
+      stock: productObj.stock,
+      categoryId: productObj.categoryId,
+      sku: productObj.sku,
+      isActive: productObj.isActive,
+      createdAt: productObj.createdAt,
+      updatedAt: productObj.updatedAt,
+    };
   } catch (error) {
     throw new Error(`Failed to create product: ${(error as Error).message}`);
   }
@@ -34,7 +48,21 @@ export const updateProduct = async (data: any): Promise<any> => {
       throw new Error("Product not found");
     }
 
-    return updatedProduct.toObject();
+    const productObj = updatedProduct.toObject();
+    
+    // Map MongoDB _id to id for GraphQL
+    return {
+      id: productObj._id.toString(),
+      name: productObj.name,
+      description: productObj.description,
+      price: productObj.price,
+      stock: productObj.stock,
+      categoryId: productObj.categoryId,
+      sku: productObj.sku,
+      isActive: productObj.isActive,
+      createdAt: productObj.createdAt,
+      updatedAt: productObj.updatedAt,
+    };
   } catch (error) {
     throw new Error(`Failed to update product: ${(error as Error).message}`);
   }

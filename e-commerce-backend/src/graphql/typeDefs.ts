@@ -22,6 +22,7 @@ export const typeDefs = gql`
     stock: Int!
     categoryId: String!
     sku: String!
+    image: String!
     isActive: Boolean!
     createdAt: String
     updatedAt: String
@@ -47,6 +48,7 @@ export const typeDefs = gql`
       stock: Int!
       categoryId: String!
       sku: String!
+      image: String
     ): Product!
 
     # Update an existing product

@@ -11,9 +11,17 @@ export const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const authData = localStorage.getItem('authToken');
+  if (authData) {
+    try {
+      const parsed = JSON.parse(authData);
+      const token = parsed.token;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (error) {
+      console.error('Failed to parse authToken');
+    }
   }
   return config;
 });
@@ -29,9 +37,18 @@ export const graphqlApi = axios.create({
 })
 
 graphqlApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const authData = localStorage.getItem('authToken');
+  if (authData) {
+    try {
+      const parsed = JSON.parse(authData);
+      const token = parsed.token;
+      if (token) {
+        const bearerToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+        config.headers.Authorization = bearerToken;
+      }
+    } catch (error) {
+      console.error('Failed to parse authToken');
+    }
   }
   return config;
 });

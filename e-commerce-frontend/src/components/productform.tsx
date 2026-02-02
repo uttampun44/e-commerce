@@ -1,4 +1,3 @@
-import { usePost } from "@/hooks/api/usePost";
 import { useGraphQL } from "@/hooks/api/useGraphQL";
 import { productSchema, type ProductFormData } from "@/schemas/productCategory";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,6 +5,9 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Button } from "./ui/button";
+import { useGraphQLMutation } from "@/hooks/api/useGraphQLMutation";
+import { toast } from "sonner";
+import { useState } from "react";
 
 interface Category {
   id: string;
@@ -21,12 +23,39 @@ const GET_CATEGORIES_QUERY = `
   }
 `;
 
+const CREATE_PRODUCT_MUTATION = `
+  mutation CreateProduct(
+    $name: String!
+    $description: String!
+    $price: Float!
+    $stock: Int!
+    $categoryId: String!
+    $sku: String!
+  ) {
+    createProduct(
+      name: $name
+      description: $description
+      price: $price
+      stock: $stock
+      categoryId: $categoryId
+      sku: $sku
+    ) {
+      id
+      name
+      price
+    }
+  }
+`;
+
 export default function ProductsForm() {
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
   });
@@ -47,13 +76,13 @@ export default function ProductsForm() {
 
   const categories = categoriesResponse?.categories || [];
 
-  const { mutate: createProduct, isPending } = usePost("/products", {
-    onSuccess: () => {
+  const { mutate: createProduct, isPending } = useGraphQLMutation(CREATE_PRODUCT_MUTATION, {
+    onSuccess: (data) => {
+      console.log("Product created successfully", data);
       reset();
-      alert("Product created successfully!");
     },
     onError: (error) => {
-      alert(error.response?.data || "Failed to create product");
+      console.error("Creation error:", error);
     },
   });
 
@@ -62,7 +91,6 @@ export default function ProductsForm() {
        createProduct(data);
     } catch (error) {
       throw new Error("Submission failed: " + (error as Error).message);
-      console.error("Submission error:", error);
     }
   };
   return (
@@ -144,7 +172,13 @@ export default function ProductsForm() {
             {/* Category */}
             <div>
               <label className="block text-sm font-medium mb-2">Category</label>
-              <Select>
+              <Select 
+                value={selectedCategory}
+                onValueChange={(value) => {
+                  setSelectedCategory(value);
+                  setValue("categoryId", value);
+                }}
+              >
                 <SelectTrigger className="w-full border" disabled={categoriesLoading}>
                   <SelectValue placeholder={categoriesLoading ? "Loading categories..." : "Select a category"} />
                 </SelectTrigger>
@@ -180,26 +214,10 @@ export default function ProductsForm() {
               )}
             </div>
 
-            {/* Image */}
-            <div>
-              <label className="block text-sm font-medium mb-2">Image</label>
-              <Input
-                type="file"
-                {...register("image")}
-                className={errors.image ? "border-red-500" : ""}
-                
-              />
-              {errors.image && (
-                <p className="text-red-500 text-sm mt-1">
-                  {typeof errors.image.message === 'string' ? errors.image.message : 'Invalid image file.'}
-                </p>
-              )}
-            </div>
-
             <Button
               type="submit"
               disabled={isPending}
-              className="w-full bg-green-600 hover:bg-green-700"
+              className="w-full bg-green-600 hover:bg-green-700 cursor-pointer "
             >
               {isPending ? "Creating..." : "Create Product"}
             </Button>

@@ -34,11 +34,11 @@ export const resolvers = {
     // Create a new product - PROTECTED MUTATION
     createProduct: (
       _: any,
-      { name, description, price, stock, categoryId, sku }: any,
+      { name, description, price, stock, categoryId, sku, image }: any,
       context: { user?: any }
     ) => {
       if (!context.user) throw new Error("Unauthorized");
-      return createProduct({ name, description, price, stock, categoryId, sku });
+      return createProduct({ name, description, price, stock, categoryId, sku, image });
     },
 
     // Update an existing product - PROTECTED MUTATION
