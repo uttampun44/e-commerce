@@ -35,6 +35,7 @@ jobs:
         working-directory: ${{ inputs.frontend-directory }}
         run: |
           # echo "${{ secrets.FRONTEND_ENV }}" > .env
+           echo "${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}" > .env
           npm i
           npm run build
           
