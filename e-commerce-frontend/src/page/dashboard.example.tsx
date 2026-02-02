@@ -3,7 +3,7 @@
  * This shows how to use Clerk throughout your application
  */
 
-import { useUser, useClerk } from "@clerk/clerk-react";
+import { useUser, useClerk, useAuth } from "@clerk/clerk-react";
 import { useAuhthContext } from "@/contextapi/auth";
 import { Button } from "@/components/ui/button";
 
@@ -100,7 +100,7 @@ export default function DashboardExample() {
  * Example component showing how to make API calls with Clerk token
  */
 function ProtectedApiExample() {
-  const { getToken } = useClerk();
+  const { getToken } = useAuth();
   const [data, setData] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
