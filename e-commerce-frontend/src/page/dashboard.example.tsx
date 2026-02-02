@@ -100,7 +100,7 @@ export default function DashboardExample() {
  * Example component showing how to make API calls with Clerk token
  */
 function ProtectedApiExample() {
-  const { getToken } = useClerk();
+
   const [data, setData] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 

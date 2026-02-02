@@ -13,14 +13,10 @@ export const usePost = <TResponse, TRequest>(
     invalidateQueries,
     onSuccess,
     onError,
-    showErrorMessage = true,
-    showSuccessMessage = true,
   }: {
     invalidateQueries?: string[][];
     onSuccess?: (data: TResponse) => void;
     onError?: (error: any) => void;
-    showErrorMessage?: boolean;
-    showSuccessMessage?: boolean;
   } = {}
 ) => {
   const queryClient = useQueryClient();

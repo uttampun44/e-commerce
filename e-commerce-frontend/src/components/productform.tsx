@@ -89,6 +89,7 @@ export default function ProductsForm() {
   const onSubmit: SubmitHandler<ProductFormData> = (data: ProductFormData) => {
     try {
        createProduct(data);
+       toast.success("Product created successfully");
     } catch (error) {
       throw new Error("Submission failed: " + (error as Error).message);
     }

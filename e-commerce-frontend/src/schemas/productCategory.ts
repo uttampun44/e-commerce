@@ -1,14 +1,6 @@
 import { z } from 'zod';
 
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_IMAGE_MIME_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
 export const productSchema = z.object({
   name: z
     .string("Product name is required")
