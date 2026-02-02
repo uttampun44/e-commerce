@@ -1,7 +1,7 @@
 
 import { configEnv } from '@/config/env';
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { verifyToken } from '@clerk/backend';
 
 export interface AuthRequest extends Request {
@@ -34,9 +34,9 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
         }
 
         // Fall back to JWT verification
-        const decoded = jwt.verify(token, configEnv.jwtSecret || 'your_jwt_secret');
+        const decoded = jwt.verify(token, configEnv.jwtSecret || 'your_jwt_secret') as JwtPayload;
         req.user = {
-          ...decoded,
+          ...(typeof decoded === 'object' ? decoded : {}),
           isClerk: false
         };
         next();
@@ -69,9 +69,9 @@ export const optionalAuthmiddleware = async (req: AuthRequest, res: Response, ne
             }
 
             // Fall back to JWT
-            const decoded = jwt.verify(token, configEnv.jwtSecret || 'your_jwt_secret');
+            const decoded = jwt.verify(token, configEnv.jwtSecret || 'your_jwt_secret') as JwtPayload;
             req.user = {
-              ...decoded,
+              ...(typeof decoded === 'object' ? decoded : {}),
               isClerk: false
             };
         } catch (error) {
