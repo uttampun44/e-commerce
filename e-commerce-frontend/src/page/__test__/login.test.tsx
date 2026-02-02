@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import Login from '../login';
+import Login from '@/page/login';
 import { BrowserRouter } from 'react-router';
 import { AuthContextProvider } from '@/contextapi/auth';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
