@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { createContext } from "react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 type AuthUser = {
     user: {
@@ -25,30 +26,52 @@ type UserContextProviderProps = {
 };
 
 export const AuthContextProvider: React.FC<UserContextProviderProps> = ({ children }) => {
+  const { isLoaded: isClerkLoaded, isSignedIn, getToken } = useAuth();
+  const { user: clerkUser } = useUser();
   const [token, setToken] = React.useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  // Load token from localStorage on mount
+  // Handle Clerk authentication
   useEffect(() => {
-    const storedToken = localStorage.getItem('authToken');
-    if (storedToken) {
-      try {
-        setToken(JSON.parse(storedToken));
-      } catch (error) {
-        localStorage.removeItem('authToken');
+    const syncClerkAuth = async () => {
+      // First, always wait for Clerk to load
+      if (!isClerkLoaded) {
+        return;
       }
-    }
-    setIsLoading(false);
-  }, []);
 
-  // Save token to localStorage whenever it changes
-  useEffect(() => {
-    if (token && token.token) {
-      localStorage.setItem('authToken', JSON.stringify(token));
-    } else {
-      localStorage.removeItem('authToken');
-    }
-  }, [token]);
+      try {
+        // If user IS signed in with Clerk
+        if (isSignedIn && clerkUser) {
+          const clerkToken = await getToken();
+          
+          if (clerkToken) {
+            const userData = {
+              user: {
+                id: clerkUser.id,
+                name: `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim() || "User",
+                email: clerkUser.primaryEmailAddress?.emailAddress || "",
+              },
+              token: clerkToken,
+            };
+            setToken(userData);
+            localStorage.setItem('authToken', JSON.stringify(userData));
+          }
+        } else {
+          // User NOT signed in - clear the token
+          localStorage.removeItem('authToken');
+          setToken(null);
+        }
+      } catch (error) {
+        console.error('Auth sync error:', error);
+        localStorage.removeItem('authToken');
+        setToken(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    syncClerkAuth();
+  }, [isClerkLoaded, isSignedIn, clerkUser, getToken]);
 
   return (
     <AuthContext.Provider value={{ token, setToken, isLoading }}>
@@ -56,6 +79,7 @@ export const AuthContextProvider: React.FC<UserContextProviderProps> = ({ childr
     </AuthContext.Provider>
   );
 }
+
 
 export const useAuhthContext = () => {
   const context = React.useContext(AuthContext);

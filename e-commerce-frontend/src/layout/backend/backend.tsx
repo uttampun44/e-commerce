@@ -2,6 +2,7 @@ import AppSidebar from "@/components/app-sidebar";
 import Topbar from "@/components/Topbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import React from "react";
+import { ClerkProvider } from "@clerk/clerk-react";
 
 type BackendProps = {
   children?: React.ReactNode;
@@ -10,7 +11,10 @@ type BackendProps = {
 export default function Backend({ children }: BackendProps) {
   return (
     <React.Fragment>
-      <SidebarProvider>
+        <ClerkProvider
+        publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || ''}
+      >
+          <SidebarProvider>
         <AppSidebar />
         <div className="flex flex-col w-full">
           <Topbar />
@@ -19,6 +23,7 @@ export default function Backend({ children }: BackendProps) {
           </main>
         </div>
       </SidebarProvider>
+        </ClerkProvider>
     </React.Fragment>
   );
 }

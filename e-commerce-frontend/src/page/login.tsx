@@ -8,11 +8,12 @@ import { usePost } from "@/hooks/api/usePost";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {z} from 'zod'
+import { z } from "zod";
 import { useAuhthContext } from "@/contextapi/auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Activity } from "react";
+import { useSignIn } from "@clerk/clerk-react";
 
 type LoginTypes = {
   email: string;
@@ -20,34 +21,39 @@ type LoginTypes = {
 };
 
 const LoginSchema = z.object({
-   email: z.string().min(1, 'Email is required'),
-   password: z.string().min(1, 'Password is required')
-})
+  email: z.string().min(1, "Email is required"),
+  password: z.string().min(1, "Password is required"),
+});
 
 export default function Login() {
   const [passwordVisible, togglePasswordVisible] = useToggle();
-  const navigate = useNavigate()
-  const {setToken} = useAuhthContext();
+  const navigate = useNavigate();
+  const { setToken } = useAuhthContext();
+  const { signIn, isLoaded } = useSignIn();
 
-  const {isPending, isSuccess, mutate: CreateLogin} = usePost('api/v1/auth/login', {
+  const {
+    isPending,
+    isSuccess,
+    mutate: CreateLogin,
+  } = usePost("api/v1/auth/login", {
     invalidateQueries: [["login"]],
 
-    onSuccess: (data: any) =>{
-      toast.success('Login Successfully')
-      navigate('/dashboard')
-      localStorage.setItem('authToken', JSON.stringify(data));
+    onSuccess: (data: any) => {
+      toast.success("Login Successfully");
+      navigate("/dashboard");
+      localStorage.setItem("authToken", JSON.stringify(data));
       setToken({
         user: {
           id: data.user.id,
           name: data.user.name,
           email: data.user.email,
         },
-        token: data.token
+        token: data.token,
       });
     },
     onError: (error: any) => {
-      toast.error('Something Went Wrong', error)
-    }
+      toast.error("Something Went Wrong", error);
+    },
   });
 
   const {
@@ -55,15 +61,47 @@ export default function Login() {
     formState: { errors },
     handleSubmit,
   } = useForm<LoginTypes>({
-    resolver: zodResolver(LoginSchema)
+    resolver: zodResolver(LoginSchema),
   });
 
   const onSubmit: SubmitHandler<LoginTypes> = (data: LoginTypes) => {
-   try {
+    try {
       CreateLogin(data);
-   } catch (error: any) {
-     toast.error(error)
-   }
+    } catch (error: any) {
+      toast.error(error);
+    }
+  };
+
+  // Handle Google OAuth Login
+  const handleGoogleLogin = async () => {
+    if (!isLoaded || !signIn) return;
+
+    try {
+      await signIn.authenticateWithRedirect({
+        strategy: "oauth_google",
+        redirectUrl: "/auth/callback",
+        redirectUrlComplete: "/dashboard",
+      });
+    } catch (error: any) {
+      console.error("Google login error:", error);
+      toast.error("Google login failed. Please try again.");
+    }
+  };
+
+  // Handle Facebook OAuth Login
+  const handleFacebookLogin = async () => {
+    if (!isLoaded || !signIn) return;
+
+    try {
+      await signIn.authenticateWithRedirect({
+        strategy: "oauth_facebook",
+        redirectUrl: "/auth/callback",
+        redirectUrlComplete: "/dashboard",
+      });
+    } catch (error: any) {
+      console.error("Facebook login error:", error);
+      toast.error("Facebook login failed. Please try again.");
+    }
   };
 
   return (
@@ -112,7 +150,9 @@ export default function Login() {
                 />
                 <div className="errors my-1">
                   {errors.password && (
-                    <span className="text-red-600">{errors.password.message}</span>
+                    <span className="text-red-600">
+                      {errors.password.message}
+                    </span>
                   )}
                 </div>
                 {passwordVisible ? (
@@ -131,32 +171,35 @@ export default function Login() {
                 type="submit"
                 className="w-full bg-black text-white p-4 rounded-md mt-1 cursor-pointer"
               >
-                {isPending ? 'Login...': 'Login'}
+                {isPending ? "Login..." : "Login"}
               </Button>
-              
-              <Activity mode={isSuccess ? 'visible' : 'hidden'}>
-                 <p className="text-green-600 text-center mt-2">
+
+              <Activity mode={isSuccess ? "visible" : "hidden"}>
+                <p className="text-green-600 text-center mt-2">
                   Login successful! Redirecting...
                 </p>
               </Activity>
-              <div className="login-google mt-7">
-                <div className="img-google flex justify-center items-center mb-4 gap-x-4 border-2 py-4 rounded-md cursor-pointer">
-                  <img src={Googgle} alt="Google" />
-                  <span className="text-base font-semibold">
-                    Login with Google
-                  </span>
-                </div>
-                <div className="img-facebook flex justify-center items-center mb-4 gap-x-4 bg-blue-600 py-4 rounded-md border cursor-pointer">
-                  <img src={Facebook} alt="Facebook" />
-                  <span className="text-base font-semibold">
-                    Login with Facebook
-                  </span>
-                </div>
-              </div>
             </form>
+
+            <div className="login-google mt-7">
+              <div 
+                className="img-google flex justify-center items-center mb-4 gap-x-4 border-2 py-4 rounded-md cursor-pointer hover:bg-gray-50 transition"
+                onClick={handleGoogleLogin}
+              >
+                <img src={Googgle} alt="Google" />
+                <span className="font-semibold text-gray-700">Sign in with Google</span>
+              </div>
+              <div 
+                className="img-facebook flex justify-center items-center mb-4 gap-x-4 bg-blue-600 hover:bg-blue-700 py-4 rounded-md border cursor-pointer transition text-white"
+                onClick={handleFacebookLogin}
+              >
+                <img src={Facebook} alt="Facebook" />
+                <span className="font-semibold">Sign in with Facebook</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </main>
-  );
+  ); 
 }

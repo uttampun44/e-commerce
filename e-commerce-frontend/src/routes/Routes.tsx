@@ -8,6 +8,7 @@ import Error from "@/page/error";
 import Home from "@/page/home";
 import Login from "@/page/login";
 import SignUp from "@/page/signup";
+import AuthCallback from "@/page/auth-callback";
 import ProtectRoutes from "@/routes/ProtectRoutes";
 import { createBrowserRouter } from "react-router";
 
@@ -30,6 +31,10 @@ export const routes = createBrowserRouter([
         {
           path: "Signup",
           Component: SignUp,
+        },
+        {
+          path: "auth/callback",
+          Component: AuthCallback,
         }
       ]
   },
