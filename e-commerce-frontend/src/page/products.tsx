@@ -1,6 +1,6 @@
 import ProductsForm from "@/components/productform";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Activity, useState } from "react";
 
 // Product validation schema
 
@@ -20,9 +20,9 @@ export default function Products() {
         </Button>
       </div>
 
-      {showForm ? (
+      <Activity mode={showForm ? 'visible' : 'hidden'}>
         <ProductsForm />
-      ) : null}
+      </Activity>
     </div>
   );
 }

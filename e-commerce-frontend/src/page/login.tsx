@@ -10,6 +10,9 @@ import { useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {z} from 'zod'
 import { useAuhthContext } from "@/contextapi/auth";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Activity } from "react";
 
 type LoginTypes = {
   email: string;
@@ -80,7 +83,7 @@ export default function Login() {
                 <label htmlFor="email" className="block font-semibold text-lg">
                   Email
                 </label>
-                <input
+                <Input
                   type="email"
                   id="email"
                   className="w-full p-3 border rounded-md bg-slate-300"
@@ -100,7 +103,7 @@ export default function Login() {
                 >
                   Password
                 </label>
-                <input
+                <Input
                   type={passwordVisible ? "text" : "password"}
                   id="password"
                   className="w-full p-3 border rounded-md bg-slate-300"
@@ -124,19 +127,18 @@ export default function Login() {
                   />
                 )}
               </div>
-              <button
+              <Button
                 type="submit"
                 className="w-full bg-black text-white p-4 rounded-md mt-1 cursor-pointer"
               >
                 {isPending ? 'Login...': 'Login'}
-              </button>
+              </Button>
               
-              {isSuccess && (
-                <p className="text-green-600 text-center mt-2">
+              <Activity mode={isSuccess ? 'visible' : 'hidden'}>
+                 <p className="text-green-600 text-center mt-2">
                   Login successful! Redirecting...
                 </p>
-              )}
-
+              </Activity>
               <div className="login-google mt-7">
                 <div className="img-google flex justify-center items-center mb-4 gap-x-4 border-2 py-4 rounded-md cursor-pointer">
                   <img src={Googgle} alt="Google" />

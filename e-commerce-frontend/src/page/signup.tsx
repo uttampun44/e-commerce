@@ -9,6 +9,8 @@ import { usePost } from "@/hooks/api/usePost";
 import { useNavigate } from "react-router";
 import { signUpSchema, type SignUpFormData } from "@/schemas/signUp.schema";
 import {toast} from 'sonner'
+import { Activity } from "react";
+import { Input } from "@/components/ui/input";
 
 export default function SignUp() {
   const [passwordVisible, togglePasswordVisible] = useToggle();
@@ -73,7 +75,7 @@ export default function SignUp() {
                 >
                   Full Name
                 </label>
-                <input
+                <Input
                   type="text"
                   className="w-full p-3 border rounded-md bg-slate-300"
                   placeholder="Enter your full name"
@@ -89,7 +91,7 @@ export default function SignUp() {
                 <label htmlFor="email" className="block font-semibold text-lg">
                   Email
                 </label>
-                <input
+                <Input
                   type="email"
                   className="w-full p-3 border rounded-md bg-slate-300"
                   placeholder="Enter your email address"
@@ -108,7 +110,7 @@ export default function SignUp() {
                 >
                   Password
                 </label>
-                <input
+                <Input
                   type={passwordVisible ? "text" : "password"}
                   className="w-full p-3 border rounded-md bg-slate-300"
                   placeholder="Enter your password"
@@ -139,7 +141,7 @@ export default function SignUp() {
                 >
                   Confirm Password
                 </label>
-                <input
+                <Input
                   type={confirmPasswordVisible ? 'text' : 'password'}
                   className="w-full p-3 border rounded-md bg-slate-300"
                   placeholder="Enter your Confirm Password"
@@ -168,12 +170,12 @@ export default function SignUp() {
               >
                 {isPending ? "Signing up..." : "Signup"}
               </button>
-
-              {isSuccess && (
-                <p className="text-green-600 text-center mt-2">
+              
+              <Activity mode={isSuccess ? 'visible' : 'hidden'}>
+                 <p className="text-green-600 text-center mt-2">
                   Registration successful! Redirecting...
                 </p>
-              )}
+              </Activity>
 
               <div className="login-google mt-7">
                 <div className="img-google flex justify-center items-center mb-4 gap-x-4 border-2 py-4 rounded-md cursor-pointer">
